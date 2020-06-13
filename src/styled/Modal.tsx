@@ -3,15 +3,12 @@ import styled from "@emotion/styled";
 import theme from "./theme";
 
 const ModalBackground = styled("div")`
-  z-index: 1;
-  position: absolute;
+  position: fixed;
   top: 0;
-  bottom: 0;
   left: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  width: 100%;
   height: 100%;
-
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -28,6 +25,7 @@ const ModalContent = styled("div")`
   border-radius: 3px;
   color: ${theme.colors.background.hex};
   overflow-y: scroll;
+  overflow-x: hidden;
 `;
 
 interface ModalProps {

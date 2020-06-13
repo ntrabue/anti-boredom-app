@@ -24,11 +24,10 @@ export const Select = styled("select")`
 
 export const FormActions = styled("div")`
   display: flex;
-  button:first-of-type {
-    margin-left: 0px;
-  }
+  flex-wrap: wrap;
   button {
     margin: 10px;
+    margin-left: 0px;
   }
 `;
 

@@ -18,6 +18,7 @@ export const AppBody = styled("section")`
   justify-content: center;
   align-items: center;
   min-height: 90vh;
+  text-align: center;
 `;
 
 export const Advice = styled("span")`
