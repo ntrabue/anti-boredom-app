@@ -1,22 +1,24 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect } from "react";
 import { defaultItems } from "./data/items";
 import { eventReducerState, IItem } from "./types";
 import { eventReducer } from "./eventReducer";
 
 import { ThemeProvider } from "emotion-theming";
-import { Global, css } from "@emotion/core";
 import theme from "./styled/theme";
 import { Button } from "./styled/Button";
 import { Text } from "./styled/Text";
 import AppHeader from "./AppHeader";
 import { AppBody, Advice } from "./styled/Layout";
 import { getButtonOption, getWaitingOptions } from "./data/messages";
+import GlobalStyles from "./styled/GlobalStyles";
 
 const secondMS = 1000;
 const numberOfSecondsTheyHaveToWait = secondMS * 3;
-
+const eventsFromLocalStorage = JSON.parse(
+  localStorage.getItem("events") as string
+);
 const defaultEventReducerState: eventReducerState = {
-  events: defaultItems,
+  events: eventsFromLocalStorage || defaultItems,
   selectingEvent: false,
   selectedEvent: null,
 };
@@ -26,6 +28,13 @@ function App() {
     eventReducer,
     defaultEventReducerState
   );
+
+  useEffect(() => {
+    const currentItems = localStorage.getItem("events");
+    const stringifiedEvents = JSON.stringify(events.events);
+    if (currentItems !== stringifiedEvents)
+      localStorage.setItem("events", stringifiedEvents);
+  }, [events]);
 
   const fetchEvents = () => setEvents({ type: "gettingEvent", value: true });
   const getEvent = () => setEvents({ type: "getRandomEvent" });
@@ -53,22 +62,7 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Global
-        styles={css`
-          html {
-            background-color: ${theme.colors.background.hex};
-            color: ${theme.colors.text.hex};
-            font-size: ${theme.fontSizes.p};
-          }
-          body {
-            width: 90%;
-            display: flex;
-            flex-direction: column;
-            margin-right: auto;
-            margin-left: auto;
-          }
-        `}
-      />
+      <GlobalStyles />
       <AppHeader
         events={events.events}
         addEvent={addEvent}

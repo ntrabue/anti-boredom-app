@@ -5,8 +5,11 @@ export function eventReducer(
   action: actions
 ): eventReducerState {
   switch (action.type) {
-    case "addEvent":
-      return { ...state, events: [...state.events, action.event] };
+    case "addEvent": {
+      const newEventArray = [...state.events, action.event];
+
+      return { ...state, events: newEventArray };
+    }
     case "toggleEvent": {
       const newEvents = state.events.map((event) => {
         return event.id === action.value
