@@ -30,7 +30,7 @@ function App() {
     defaultEventReducerState
   );
 
-  ReactGA.initialize("UA-000000-01");
+  ReactGA.initialize("UA-48297569-2");
   ReactGA.pageview(window.location.pathname + window.location.search);
 
   useEffect(() => {
