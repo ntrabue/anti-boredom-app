@@ -25,7 +25,7 @@ const EventChecklistModal: React.FC<EventChecklistModal> = ({
   const enabledEvents = events.filter((event) => event.enabled);
   return (
     <>
-      <Button variantColor='red' onClick={onOpen}>
+      <Button variantColor='pink' onClick={onOpen}>
         Active Events: {enabledEvents.length}
       </Button>
 

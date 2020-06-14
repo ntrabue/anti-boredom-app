@@ -3,12 +3,9 @@ import { defaultItems } from "./data/items";
 import { eventReducerState, IItem } from "./types";
 import { eventReducer } from "./eventReducer";
 import ThemeProvider from "./styled/ThemeProvider";
-import { Text } from "@chakra-ui/core";
-import { Button } from "@chakra-ui/core";
 import Header from "./layout/Header";
-import { AppBody, Advice } from "./styled/Layout";
-import { getButtonOption, getWaitingOptions } from "./data/messages";
 import ReactGA from "react-ga";
+import MainContent from "./layout/MainContent";
 
 const secondMS = 1000;
 const numberOfSecondsTheyHaveToWait = secondMS * 3;
@@ -53,10 +50,6 @@ function App() {
     return setTimeout(getEvent, numberOfSecondsTheyHaveToWait);
   };
 
-  const activeEvents = events.events.filter((event) => event.enabled);
-  const buttonContent =
-    activeEvents.length === 0 ? "There are no options" : getButtonOption();
-
   return (
     <ThemeProvider>
       <Header
@@ -64,28 +57,12 @@ function App() {
         addEvent={addEvent}
         toggleEvent={toggleEvent}
       />
-      <AppBody>
-        <Text fontSize='6xl'>Anti-Boredom Bot</Text>
-        <Advice>
-          <Text fontSize='4xl'>
-            {events.selectingEvent
-              ? getWaitingOptions()
-              : events.selectedEvent
-              ? `${events.selectedEvent.name} ${events.selectedEvent.icon}`
-              : "Click the button below to cure your boredom"}
-          </Text>
-        </Advice>
-
-        <Button
-          variantColor='green'
-          size='lg'
-          onClick={findSomething}
-          isLoading={events.selectingEvent}
-          loadingText='One sec...'
-        >
-          {buttonContent}
-        </Button>
-      </AppBody>
+      <MainContent
+        events={events.events}
+        selectedEvent={events.selectedEvent}
+        selectingEvent={events.selectingEvent}
+        findSomething={findSomething}
+      />
     </ThemeProvider>
   );
 }
