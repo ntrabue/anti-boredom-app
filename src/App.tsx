@@ -2,15 +2,12 @@ import React, { useReducer, useEffect } from "react";
 import { defaultItems } from "./data/items";
 import { eventReducerState, IItem } from "./types";
 import { eventReducer } from "./eventReducer";
-
-import { ThemeProvider } from "emotion-theming";
-import theme from "./styled/theme";
-import { Button } from "./styled/Button";
-import { Text } from "./styled/Text";
-import AppHeader from "./AppHeader";
+import ThemeProvider from "./styled/ThemeProvider";
+import { Text } from "@chakra-ui/core";
+import { Button } from "@chakra-ui/core";
+import Header from "./layout/Header";
 import { AppBody, Advice } from "./styled/Layout";
 import { getButtonOption, getWaitingOptions } from "./data/messages";
-import GlobalStyles from "./styled/GlobalStyles";
 import ReactGA from "react-ga";
 
 const secondMS = 1000;
@@ -58,24 +55,19 @@ function App() {
 
   const activeEvents = events.events.filter((event) => event.enabled);
   const buttonContent =
-    activeEvents.length === 0
-      ? "There are no options"
-      : events.selectingEvent
-      ? "One sec..."
-      : getButtonOption();
+    activeEvents.length === 0 ? "There are no options" : getButtonOption();
 
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <AppHeader
+    <ThemeProvider>
+      <Header
         events={events.events}
         addEvent={addEvent}
         toggleEvent={toggleEvent}
       />
       <AppBody>
-        <Text tag='h1'>Anti-Boredom Bot</Text>
+        <Text fontSize='6xl'>Anti-Boredom Bot</Text>
         <Advice>
-          <Text tag='h3'>
+          <Text fontSize='4xl'>
             {events.selectingEvent
               ? getWaitingOptions()
               : events.selectedEvent
@@ -85,10 +77,11 @@ function App() {
         </Advice>
 
         <Button
-          background={activeEvents.length === 0 ? "bad" : "good"}
-          size='h2'
+          variantColor='green'
+          size='lg'
           onClick={findSomething}
-          disabled={events.selectingEvent || activeEvents.length === 0}
+          isLoading={events.selectingEvent}
+          loadingText='One sec...'
         >
           {buttonContent}
         </Button>
