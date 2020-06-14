@@ -11,6 +11,7 @@ import AppHeader from "./AppHeader";
 import { AppBody, Advice } from "./styled/Layout";
 import { getButtonOption, getWaitingOptions } from "./data/messages";
 import GlobalStyles from "./styled/GlobalStyles";
+import ReactGA from "react-ga";
 
 const secondMS = 1000;
 const numberOfSecondsTheyHaveToWait = secondMS * 3;
@@ -29,6 +30,7 @@ function App() {
     defaultEventReducerState
   );
 
+  ReactGA.initialize("UA-000000-01");
   useEffect(() => {
     const currentItems = localStorage.getItem("events");
     const stringifiedEvents = JSON.stringify(events.events);
