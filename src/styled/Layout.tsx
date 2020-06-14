@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const Header = styled("section")`
+export const HeaderWrapper = styled("section")`
   display: flex;
   justify-content: flex-end;
   margin: 5px 0;
