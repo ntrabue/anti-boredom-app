@@ -12,11 +12,11 @@ const theme = {
   },
   fontSizes: {
     small: "1rem",
-    p: "1.5rem",
-    h4: "2rem",
-    h3: "2.8rem",
-    h2: "3rem",
-    h1: "3.2rem",
+    p: "1.3rem",
+    h4: "1.8rem",
+    h3: "2.3rem",
+    h2: "2.8rem",
+    h1: "3rem",
   },
   radius: {
     button: "8px",
