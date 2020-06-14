@@ -26,9 +26,7 @@ const MainContent: React.FC<MainContent> = ({
       <Text fontSize='6xl'>
         <Flex direction='row' alignItems='center'>
           B<Box as={FaRobot} />
-          redB
-          <Box as={FaRobot} />
-          t.app
+          red Bot
         </Flex>
       </Text>
 
