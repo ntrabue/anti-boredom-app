@@ -12,13 +12,15 @@ import {
   FormControl,
   FormLabel,
 } from "@chakra-ui/core";
+import { useDispatch } from "react-redux";
+import { addEvent } from "../redux/events/actions";
 
 interface AddEventForm {
-  addEvent: (item: IItem) => void;
   handleClose?: () => void;
 }
 
-const AddEventForm: React.FC<AddEventForm> = ({ addEvent, handleClose }) => {
+const AddEventForm: React.FC<AddEventForm> = ({ handleClose }) => {
+  const dispatch = useDispatch();
   const defaultFormValues: IItem = {
     id: "",
     name: "",
@@ -27,6 +29,7 @@ const AddEventForm: React.FC<AddEventForm> = ({ addEvent, handleClose }) => {
     enabled: true,
     icon: "😕",
   };
+
   const [values, setValues] = useState(defaultFormValues);
 
   const setEventName = (e: React.FormEvent<HTMLInputElement>) => {
@@ -40,8 +43,14 @@ const AddEventForm: React.FC<AddEventForm> = ({ addEvent, handleClose }) => {
   // TODO: check if there is an event with that value already and decline if so
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    addEvent(
-      buildItem({ name: values.name, type: values.type, minAge: values.minAge })
+    dispatch(
+      addEvent(
+        buildItem({
+          name: values.name,
+          type: values.type,
+          minAge: values.minAge,
+        })
+      )
     );
     return setValues({ ...values, name: "" });
   };

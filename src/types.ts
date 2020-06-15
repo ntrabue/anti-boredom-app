@@ -1,5 +1,3 @@
-import { defaultItems } from "./data/items";
-
 export type itemType = "fun" | "clean" | "learning" | "punishment";
 export interface IItem {
   id: string;
@@ -16,33 +14,39 @@ export interface eventReducerState {
   selectedEvent: IItem | null;
 }
 
-interface addEvent {
-  type: "addEvent";
+export interface IAddEvent {
+  type: "events/add-event";
   event: IItem;
 }
 
-interface removeEvent {
-  type: "removeEvent";
+export interface IRemoveEvent {
+  type: "events/remove-event";
   event: string;
 }
 
-interface getRandomEvent {
-  type: "getRandomEvent";
+export interface IGetRandomEvent {
+  type: "events/get-random-event";
 }
 
-interface gettingEvent {
-  type: "gettingEvent";
-  value: boolean;
+export interface IEnableCategory {
+  type: "events/enable-category";
+  category: itemType;
 }
 
-interface toggleEvent {
-  type: "toggleEvent";
-  value: string;
+export interface IDisableCategory {
+  type: "events/disable-category";
+  category: itemType;
+}
+
+export interface IToggleEvent {
+  type: "events/toggle-event";
+  event: string;
 }
 
 export type actions =
-  | addEvent
-  | removeEvent
-  | getRandomEvent
-  | gettingEvent
-  | toggleEvent;
+  | IAddEvent
+  | IRemoveEvent
+  | IGetRandomEvent
+  | IEnableCategory
+  | IDisableCategory
+  | IToggleEvent;

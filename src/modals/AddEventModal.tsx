@@ -1,5 +1,4 @@
 import React from "react";
-import { IItem } from "../types";
 import {
   useDisclosure,
   Button,
@@ -12,11 +11,7 @@ import {
 } from "@chakra-ui/core";
 import AddEventForm from "../forms/AddEventForm";
 
-interface AddEventModal {
-  addEvent: (item: IItem) => void;
-}
-
-const AddEventModal: React.FC<AddEventModal> = ({ addEvent }) => {
+const AddEventModal: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -31,7 +26,7 @@ const AddEventModal: React.FC<AddEventModal> = ({ addEvent }) => {
           <ModalHeader>Add An Event</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <AddEventForm addEvent={addEvent} handleClose={onClose} />
+            <AddEventForm handleClose={onClose} />
           </ModalBody>
         </ModalContent>
       </Modal>
