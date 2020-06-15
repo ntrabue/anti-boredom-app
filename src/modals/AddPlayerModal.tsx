@@ -71,17 +71,23 @@ const AddPlayerModal: React.FC = () => {
     }
   }, [onOpen, players]);
 
+  function onCloseIntercept() {
+    if (players.length > 0) {
+      return onClose();
+    }
+  }
+
   return (
     <>
       <PlayerDropDown onOpen={onOpen} />
 
-      <Modal isOpen={isOpen} onClose={onClose} size='xl'>
+      <Modal isOpen={isOpen} onClose={onCloseIntercept} size='xl'>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Add Player</ModalHeader>
-          <ModalCloseButton />
+          {players.length > 0 && <ModalCloseButton />}
           <ModalBody>
-            <AddPlayerForm onClose={onClose} />
+            <AddPlayerForm onClose={onCloseIntercept} />
           </ModalBody>
         </ModalContent>
       </Modal>
