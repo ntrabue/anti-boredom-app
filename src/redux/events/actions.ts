@@ -5,6 +5,8 @@ import {
   EVENT_GET_RANDOM_EVENT,
   EVENT_DISABLE_CATEGORY,
   EVENT_ENABLE_CATEGORY,
+  EVENT_DISABLE_INELIGIBLE_EVENTS,
+  EVENT_SET_EVENTS,
 } from "./constants";
 import {
   IItem,
@@ -15,8 +17,12 @@ import {
   IRemoveEvent,
   IDisableCategory,
   IEnableCategory,
-} from "../../types";
-
+  IDisableIneligibleEvents,
+  ISetEvents,
+} from "./types";
+export function setEvents(events: IItem[]): ISetEvents {
+  return { type: EVENT_SET_EVENTS, events };
+}
 export function addEvent(event: IItem): IAddEvent {
   return {
     type: EVENT_ADD_EVENT,
@@ -55,5 +61,12 @@ export function enableCategory(category: itemType): IEnableCategory {
 export function getRandomEvent(): IGetRandomEvent {
   return {
     type: EVENT_GET_RANDOM_EVENT,
+  };
+}
+
+export function disableIneligibleEvents(age: number): IDisableIneligibleEvents {
+  return {
+    type: EVENT_DISABLE_INELIGIBLE_EVENTS,
+    age,
   };
 }
