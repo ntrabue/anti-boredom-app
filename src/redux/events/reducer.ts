@@ -66,10 +66,14 @@ export function reducer(
       const newEvents = state.events.map((event) =>
         event.type === action.category ? { ...event, enabled: false } : event
       );
+
+      const newEligibleEvents = state.eligibleEvents.map((event) =>
+        event.type === action.category ? { ...event, enabled: false } : event
+      );
       return {
         ...state,
         events: newEvents,
-        eligibleEvents: newEvents,
+        eligibleEvents: newEligibleEvents,
       };
     }
     case EVENT_ENABLE_CATEGORY: {
@@ -77,10 +81,14 @@ export function reducer(
         event.type === action.category ? { ...event, enabled: true } : event
       );
 
+      const newEligibleEvents = state.eligibleEvents.map((event) =>
+        event.type === action.category ? { ...event, enabled: true } : event
+      );
+
       return {
         ...state,
         events: newEvents,
-        eligibleEvents: newEvents,
+        eligibleEvents: newEligibleEvents,
       };
     }
     case EVENT_GET_RANDOM_EVENT: {
