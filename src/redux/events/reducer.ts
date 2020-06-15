@@ -31,7 +31,7 @@ export function reducer(
       return {
         ...state,
         events: [...state.events, action.event],
-        eligibleEvents: [...state.events, action.event],
+        eligibleEvents: [...state.eligibleEvents, action.event],
       };
     }
     case EVENT_REMOVE_EVENT: {
@@ -39,7 +39,7 @@ export function reducer(
         ...state,
         events: [...state.events.filter((event) => event.id !== action.event)],
         eligibleEvents: [
-          ...state.events.filter((event) => event.id !== action.event),
+          ...state.eligibleEvents.filter((event) => event.id !== action.event),
         ],
       };
     }
