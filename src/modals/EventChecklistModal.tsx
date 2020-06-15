@@ -20,7 +20,7 @@ const EventChecklistModal: React.FC = () => {
   return (
     <>
       <Button variantColor='pink' onClick={onOpen}>
-        Active Events: {enabledEvents.length}
+        Events: {enabledEvents.length}/{eligibleEvents.length}
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} size='xl'>

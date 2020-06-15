@@ -53,6 +53,13 @@ export function reducer(
               : event
           ),
         ],
+        eligibleEvents: [
+          ...state.eligibleEvents.map((event) =>
+            event.id === action.event
+              ? { ...event, enabled: !event.enabled }
+              : event
+          ),
+        ],
       };
     }
     case EVENT_DISABLE_CATEGORY: {
@@ -62,6 +69,7 @@ export function reducer(
       return {
         ...state,
         events: newEvents,
+        eligibleEvents: newEvents,
       };
     }
     case EVENT_ENABLE_CATEGORY: {
@@ -72,6 +80,7 @@ export function reducer(
       return {
         ...state,
         events: newEvents,
+        eligibleEvents: newEvents,
       };
     }
     case EVENT_GET_RANDOM_EVENT: {
