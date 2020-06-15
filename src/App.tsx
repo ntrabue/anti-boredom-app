@@ -1,68 +1,38 @@
-import React, { useReducer, useEffect } from "react";
-import { defaultItems } from "./data/items";
-import { eventReducerState, IItem } from "./types";
-import { eventReducer } from "./eventReducer";
+import React, { useEffect } from "react";
 import ThemeProvider from "./styled/ThemeProvider";
 import Header from "./layout/Header";
 import ReactGA from "react-ga";
 import MainContent from "./layout/MainContent";
 
-const secondMS = 1000;
-const numberOfSecondsTheyHaveToWait = secondMS * 3;
-const eventsFromLocalStorage = JSON.parse(
-  localStorage.getItem("events") as string
-);
-const defaultEventReducerState: eventReducerState = {
-  events: eventsFromLocalStorage || defaultItems,
-  selectingEvent: false,
-  selectedEvent: null,
-};
+import { useSelector } from "react-redux";
+import { IRootStore } from "./redux/store";
 
 function App() {
-  const [events, setEvents] = useReducer(
-    eventReducer,
-    defaultEventReducerState
-  );
+  const { events } = useSelector((state: IRootStore) => state.events);
 
   ReactGA.initialize("UA-48297569-2");
   ReactGA.pageview(window.location.pathname + window.location.search);
 
   useEffect(() => {
-    const currentItems = localStorage.getItem("events");
-    const stringifiedEvents = JSON.stringify(events.events);
-    if (currentItems !== stringifiedEvents)
-      localStorage.setItem("events", stringifiedEvents);
+    const localStorageEvents = localStorage.getItem("events");
+    const localStorageEventsIsDefined =
+      localStorageEvents && localStorageEvents !== "undefined ";
+    const stringifiedLocalEvents =
+      localStorageEventsIsDefined && JSON.parse(localStorageEvents as string);
+    const stringifiedStoreEvents = events && JSON.stringify(events);
+
+    if (stringifiedLocalEvents !== stringifiedStoreEvents)
+      localStorage.setItem("events", stringifiedStoreEvents);
   }, [events]);
-
-  const fetchEvents = () => setEvents({ type: "gettingEvent", value: true });
-  const getEvent = () => setEvents({ type: "getRandomEvent" });
-  const addEvent = (item: IItem) => {
-    return setEvents({ type: "addEvent", event: item });
-  };
-  const toggleEvent = (event: IItem) =>
-    setEvents({
-      type: "toggleEvent",
-      value: event.id,
-    });
-
-  const findSomething = () => {
-    fetchEvents();
-    return setTimeout(getEvent, numberOfSecondsTheyHaveToWait);
-  };
 
   return (
     <ThemeProvider>
-      <Header
-        events={events.events}
-        addEvent={addEvent}
-        toggleEvent={toggleEvent}
-      />
-      <MainContent
-        events={events.events}
-        selectedEvent={events.selectedEvent}
-        selectingEvent={events.selectingEvent}
-        findSomething={findSomething}
-      />
+      {events && (
+        <>
+          <Header />
+          <MainContent />
+        </>
+      )}
     </ThemeProvider>
   );
 }

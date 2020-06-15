@@ -10,17 +10,11 @@ import {
   ModalBody,
 } from "@chakra-ui/core";
 import EventChecklist from "../forms/EventChecklist";
-import { IItem } from "../types";
+import { useSelector } from "react-redux";
+import { IRootStore } from "../redux/store";
 
-interface EventChecklistModal {
-  events: IItem[];
-  toggleEvent: (event: IItem) => void;
-}
-
-const EventChecklistModal: React.FC<EventChecklistModal> = ({
-  events,
-  toggleEvent,
-}) => {
+const EventChecklistModal: React.FC = () => {
+  const { events } = useSelector((state: IRootStore) => state.events);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const enabledEvents = events.filter((event) => event.enabled);
   return (
@@ -35,7 +29,7 @@ const EventChecklistModal: React.FC<EventChecklistModal> = ({
           <ModalHeader>Disable/Enable Events</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <EventChecklist events={events} toggleEvent={toggleEvent} />
+            <EventChecklist />
           </ModalBody>
         </ModalContent>
       </Modal>

@@ -1,34 +1,31 @@
 import React from "react";
 import { getButtonOption, getWaitingOptions } from "../data/messages";
-import { IItem } from "../types";
-import { Button, Text, Flex, Icon, Box } from "@chakra-ui/core";
+import { Button, Text, Flex, Box } from "@chakra-ui/core";
 import { AppBody, Advice } from "../styled/Layout";
 import { FaRobot } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import { IRootStore } from "../redux/store";
+import { getRandomEvent } from "../redux/events/actions";
 
-interface MainContent {
-  selectedEvent: IItem | null;
-  events: IItem[];
-  selectingEvent: boolean;
-  findSomething: () => void;
-}
-
-const MainContent: React.FC<MainContent> = ({
-  selectedEvent,
-  events,
-  findSomething,
-  selectingEvent,
-}) => {
+const MainContent: React.FC = () => {
+  const dispatch = useDispatch();
+  const { events, selectedEvent, selectingEvent } = useSelector(
+    (state: IRootStore) => state.events
+  );
   const activeEvents = events.filter((event) => event.enabled);
   const buttonContent =
     activeEvents.length === 0 ? "There are no options" : getButtonOption();
   return (
     <AppBody>
-      <Text fontSize='6xl'>
-        <Flex direction='row' alignItems='center'>
-          B<Box as={FaRobot} />
+      <Flex direction='row' alignItems='center'>
+        <Text fontSize='6xl' as='span'>
+          B
+        </Text>
+        <Box fontSize='6xl' as={FaRobot} />
+        <Text fontSize='6xl' as='span'>
           red Bot
-        </Flex>
-      </Text>
+        </Text>
+      </Flex>
 
       <Advice>
         <Text fontSize='4xl'>
@@ -43,7 +40,7 @@ const MainContent: React.FC<MainContent> = ({
       <Button
         variantColor='green'
         size='lg'
-        onClick={findSomething}
+        onClick={() => dispatch(getRandomEvent())}
         isLoading={selectingEvent}
         loadingText='One sec...'
       >
