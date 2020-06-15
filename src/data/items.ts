@@ -7,6 +7,7 @@ export const defaultItems: IItem[] = [
     name:
       "You have one hour to make a minecraft castle. Get it graded by an adult",
     type: "fun",
+    minAge: 5,
     maxAge: 18,
   }),
   buildItem({
