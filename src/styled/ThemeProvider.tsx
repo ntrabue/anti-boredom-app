@@ -4,6 +4,7 @@ import {
   theme as chakraTheme,
   ThemeProvider as ChakraThemeProvider,
   CSSReset,
+  ColorModeProvider,
 } from "@chakra-ui/core";
 export type color = "background" | "text" | "good" | "bad" | "neutral";
 
@@ -27,24 +28,23 @@ interface ThemeProvider {
 const ThemeProvider: React.FC<ThemeProvider> = ({ children }) => {
   return (
     <ChakraThemeProvider theme={theme}>
-      <CSSReset />
-      <Global
-        styles={css`
-          body {
-            max-width: 90%;
-            margin-left: auto;
-            margin-right: auto;
-            background-color: ${theme.colors.brand.background};
-            color: ${theme.colors.brand.text};
-          }
+      <ColorModeProvider>
+        <CSSReset />
+        <Global
+          styles={css`
+            body {
+              max-width: 90%;
+              margin-left: auto;
+              margin-right: auto;
+            }
 
-          section[role="dialog"] {
-            padding: 20px;
-            color: ${theme.colors.brand.background};
-          }
-        `}
-      />
-      {children}
+            section[role="dialog"] {
+              padding: 20px;
+            }
+          `}
+        />
+        {children}
+      </ColorModeProvider>
     </ChakraThemeProvider>
   );
 };

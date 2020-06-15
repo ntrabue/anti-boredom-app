@@ -14,9 +14,9 @@ import { useSelector } from "react-redux";
 import { IRootStore } from "../redux/store";
 
 const EventChecklistModal: React.FC = () => {
-  const { events } = useSelector((state: IRootStore) => state.events);
+  const { eligibleEvents } = useSelector((state: IRootStore) => state.events);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const enabledEvents = events.filter((event) => event.enabled);
+  const enabledEvents = eligibleEvents.filter((event) => event.enabled);
   return (
     <>
       <Button variantColor='pink' onClick={onOpen}>

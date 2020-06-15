@@ -19,22 +19,26 @@ import {
   disableCategory,
   enableCategory,
 } from "../redux/events/actions";
-import { itemType } from "../types";
+import { itemType } from "../redux/events/types";
 import { toTitleCase } from "../utils/toTitleCase";
 import { FaTrash } from "react-icons/fa";
 
 const EventsChecklist: React.FC = () => {
   const dispatch = useDispatch();
-  const { events } = useSelector((state: IRootStore) => state.events);
-  const categories = events.map((event) => event.type);
+  const { eligibleEvents } = useSelector((state: IRootStore) => state.events);
+  const categories = eligibleEvents.map((event) => event.type);
   const uniqueCategories = categories.filter(
     (item, index) => categories.indexOf(item) === index
   );
   return (
-    <Stack spacing={3}>
+    <Stack spacing={4}>
       {uniqueCategories.map((category: itemType) => (
         <Box key={category}>
-          <Flex justifyContent='space-between' alignItems='center'>
+          <Flex
+            padding='15px 0'
+            justifyContent='space-between'
+            alignItems='center'
+          >
             <Text fontSize='2xl' as='h3'>
               {toTitleCase(category)}
             </Text>
@@ -56,10 +60,11 @@ const EventsChecklist: React.FC = () => {
             </ButtonGroup>
           </Flex>
 
-          {events
+          {eligibleEvents
             .filter((event) => event.type === category)
             .map((event) => (
               <Grid
+                marginLeft='15px'
                 templateColumns='1fr 6fr 1fr'
                 alignItems='center'
                 justifyContent='center'

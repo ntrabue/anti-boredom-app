@@ -1,19 +1,23 @@
-import React, { useState } from "react";
-import { IItem, itemType } from "../types";
-import { buildItem } from "../data/items";
+import React, { useState, useEffect } from "react";
+import { IItem, itemType } from "../redux/events/types";
+import { buildItem } from "../utils/buildItem";
 import { Form } from "../styled/Form";
 import {
   Button,
   ButtonGroup,
-  Text,
   Input,
   Stack,
   Select,
   FormControl,
   FormLabel,
+  Textarea,
+  Grid,
+  Text,
+  FormHelperText,
 } from "@chakra-ui/core";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addEvent } from "../redux/events/actions";
+import { IRootStore } from "../redux/store";
 
 interface AddEventForm {
   handleClose?: () => void;
@@ -21,16 +25,28 @@ interface AddEventForm {
 
 const AddEventForm: React.FC<AddEventForm> = ({ handleClose }) => {
   const dispatch = useDispatch();
+  const { activePlayer } = useSelector((state: IRootStore) => state.players);
   const defaultFormValues: IItem = {
     id: "",
     name: "",
     minAge: 0,
+    maxAge: 0,
     type: "fun",
     enabled: true,
     icon: "😕",
   };
 
   const [values, setValues] = useState(defaultFormValues);
+  const [ageError, setAgeError] = useState("");
+  useEffect(() => {
+    if (values.maxAge !== 0 && values.minAge > values.maxAge) {
+      setAgeError("Minimum age cannot be lower than maximum age");
+    } else if (activePlayer && values.minAge > activePlayer.age) {
+      setAgeError("You can't create an event for people older than yourself");
+    } else {
+      setAgeError("");
+    }
+  }, [values.minAge, values.maxAge, activePlayer]);
 
   const setEventName = (e: React.FormEvent<HTMLInputElement>) => {
     return setValues({ ...values, name: e.currentTarget.value });
@@ -40,9 +56,24 @@ const AddEventForm: React.FC<AddEventForm> = ({ handleClose }) => {
     return setValues({ ...values, type: e.currentTarget.value as itemType });
   };
 
+  const setMinAge = (e: React.FormEvent<HTMLInputElement>) => {
+    return setValues({
+      ...values,
+      minAge: parseInt(e.currentTarget.value, 10),
+    });
+  };
+
+  const setMaxAge = (e: React.FormEvent<HTMLInputElement>) => {
+    return setValues({
+      ...values,
+      maxAge: parseInt(e.currentTarget.value, 10),
+    });
+  };
+
   // TODO: check if there is an event with that value already and decline if so
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (ageError) return;
     dispatch(
       addEvent(
         buildItem({
@@ -77,18 +108,17 @@ const AddEventForm: React.FC<AddEventForm> = ({ handleClose }) => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Text fontSize='xl'>Create a Custom Event</Text>
-
       <Stack spacing={4}>
         <FormControl isRequired>
           <FormLabel htmlFor='valueDescription'>
             What does the person have to do?
           </FormLabel>
-          <Input
+          <Textarea
             id='valueDescription'
             size='lg'
             isRequired
             type='text'
+            maxLength={200}
             value={values.name}
             onChange={setEventName}
           />
@@ -110,6 +140,37 @@ const AddEventForm: React.FC<AddEventForm> = ({ handleClose }) => {
             ))}
           </Select>
         </FormControl>
+        <Grid templateColumns='1fr 1fr' columnGap={2}>
+          <FormControl>
+            <FormLabel htmlFor='eventMinAge'>Minimum Age:</FormLabel>
+            <Input
+              type='number'
+              id='eventMinAge'
+              size='lg'
+              onChange={setMinAge}
+              value={values.minAge}
+            />
+            <FormHelperText>0 means there is no minimum age</FormHelperText>
+          </FormControl>
+
+          <FormControl>
+            <FormLabel htmlFor='eventMaxAge'>Max Age:</FormLabel>
+            <Input
+              type='number'
+              id='eventMaxAge'
+              size='lg'
+              onChange={setMaxAge}
+              value={values.maxAge}
+            />
+            <FormHelperText>0 means there is no max age</FormHelperText>
+          </FormControl>
+          {ageError && (
+            <Text fontWeight='bold' color='red.300' gridColumn='1 / span 2'>
+              {ageError}
+            </Text>
+          )}
+        </Grid>
+
         <ButtonGroup spacing={4}>
           <Button variantColor='green' type='submit' size='lg'>
             Submit

@@ -3,6 +3,7 @@ export interface IItem {
   id: string;
   name: string;
   minAge: number;
+  maxAge: number;
   type: itemType;
   enabled: boolean;
   icon: string;
@@ -10,8 +11,14 @@ export interface IItem {
 
 export interface eventReducerState {
   events: IItem[];
+  eligibleEvents: IItem[];
   selectingEvent: boolean;
   selectedEvent: IItem | null;
+}
+
+export interface ISetEvents {
+  type: "events/set-events";
+  events: IItem[];
 }
 
 export interface IAddEvent {
@@ -43,10 +50,17 @@ export interface IToggleEvent {
   event: string;
 }
 
+export interface IDisableIneligibleEvents {
+  type: "events/disable-ineligible-events";
+  age: number;
+}
+
 export type actions =
+  | ISetEvents
   | IAddEvent
   | IRemoveEvent
   | IGetRandomEvent
   | IEnableCategory
   | IDisableCategory
-  | IToggleEvent;
+  | IToggleEvent
+  | IDisableIneligibleEvents;
